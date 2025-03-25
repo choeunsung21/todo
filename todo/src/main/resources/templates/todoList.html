@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>할 일 목록</h1>
+	<div>
+		<label for="search">내용:</label>
+		<input type="text" id="search">
+		<button>검색</button>	
+	</div>
+	<br>
+	<div>
+		<table border="1">
+			<tr>
+				<th>완료</th>
+				<th>번호</th>
+				<th>내용</th>
+				<th>삭제</th>
+			</tr>
+		</table>
+	</div>
+	<h1>할 일 추가</h1>
+	<div class="addTodo_form">
+		<form action='/addTodo' name="addTodo_form" method="post">
+			<input type="text" name="content" placeholder="할일을 입력하세요">
+			<input type="submit" value="추가하기"> 
+		</form>
+	</div>
+</body>
+<script>
+	const form = document.addTodo_form;
+	form.addEventListener('submit',(e)=>{
+		e.preventDefault();
+		
+		let vali_check = false;
+		let vali_text = "";
+		
+		if(!form.content.value){
+			vali_text = "할일을 입력하세요!"
+		} else {
+			vali_check = true;
+		}
+		
+		if(vali_check == false){
+			alert(vali_text);
+		} else {
+			const payload = new FormData(form);
+			fetch("/",{
+				method:'post',
+				body:payload
+			})
+			.then(response => responsejson())
+			.then(data => {
+				if(data.res_code=="200"){
+					location.href='/';
+				}
+			})
+		}
+	})
+</script>
+</html>
