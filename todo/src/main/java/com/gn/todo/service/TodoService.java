@@ -1,12 +1,18 @@
 package com.gn.todo.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.gn.todo.dto.PageDto;
+import com.gn.todo.dto.SearchDto;
 import com.gn.todo.dto.TodoDto;
 import com.gn.todo.entity.Todo;
 import com.gn.todo.repository.TodoRepository;
+import com.gn.todo.specification.TodoSpecification;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,8 +36,17 @@ public class TodoService {
 		return result;
 	}
 
-	public List<Todo> selectTodoAll() {
-		List<Todo> todoList = repository.findAll();
-		return todoList;
+	public Page<Todo> selectTodoAll(SearchDto searchDto, PageDto pageDto) {
+		
+		Pageable pageable = PageRequest.of(pageDto.getNowPage() - 1, pageDto.getNumPerPage(),
+				Sort.by("no").ascending());
+		
+		Specification<Todo> spec = (root, query, criteriaBuilder) -> null;
+		if(searchDto.getSearch_text()==null) {
+			searchDto.setSearch_text("");
+		}
+		spec = spec.and(TodoSpecification.contentContains(searchDto.getSearch_text()));
+		Page<Todo> resultList = repository.findAll(spec, pageable);
+		return resultList;
 	}
 }

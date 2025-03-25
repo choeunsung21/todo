@@ -1,15 +1,17 @@
 package com.gn.todo.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gn.todo.dto.PageDto;
+import com.gn.todo.dto.SearchDto;
 import com.gn.todo.dto.TodoDto;
 import com.gn.todo.entity.Todo;
 import com.gn.todo.service.TodoService;
@@ -24,10 +26,17 @@ public class TodoListController {
 	private final TodoService service;
 	
 	@GetMapping({"","/"})
-	public String todoList(Model model) {
+	public String searchTodo(Model model, SearchDto searchDto, PageDto pageDto) {
+
+		if (pageDto.getNowPage() == 0)
+			pageDto.setNowPage(1);
+
+		Page<Todo> resultList = service.selectTodoAll(searchDto, pageDto);
+		pageDto.setTotalPage(resultList.getTotalPages());
 		
-		List<Todo> resultList = service.selectTodoAll();
 		model.addAttribute("todoList", resultList);
+		model.addAttribute("searchDto", searchDto);
+		model.addAttribute("pageDto", pageDto);
 		
 		return "todoList";
 	}

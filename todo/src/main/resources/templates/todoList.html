@@ -8,9 +8,11 @@
 <body>
 <h1>할 일 목록</h1>
 	<div>
-		<label for="search">내용:</label>
-		<input type="text" id="search">
-		<button>검색</button>	
+		<form action="" name="search_form" method="get" >
+			<label for="search_text">내용:</label>
+			<input type="text" id="search_text" name="search_text" th:value="${searchDto.search_text}">
+			<input type="submit" value="검색">
+		</form>
 	</div>
 	<br>
 	<div class="todo_list">
@@ -24,20 +26,30 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:if="${#lists.isEmpty(todoList)}">
+				<tr th:if="${#lists.isEmpty(todoList.content)}">
 					<td colspan="4">조회된 데이터가 없습니다.</td>
 				</tr>
-				<tr th:if="${!#lists.isEmpty(todoList)}"
-					th:each="todo : ${todoList}"
+				<tr th:if="${!#lists.isEmpty(todoList.content)}"
+					th:each="todo, todoStatus : ${todoList.content}"
 					th:attr="data-todo-no=${todo.no}">
 					<td><input type="checkbox"></td>
-					<td th:text="${todo.no}">번호</td>
+					<td th:text="${(pageDto.nowPage-1)*(pageDto.numPerPage)+todoStatus.count}">번호</td>
 					<td th:text="${todo.content}">내용</td>
 					<td><button>삭제</button></td>
 				</tr>
-	</tbody>
+			</tbody>
 		</table>
 	</div>
+	<div class="pagination">
+			<a th:if="${pageDto.prev}"
+			   th:href="@{/(nowPage=${pageDto.pageBarStart-1},search_text=${searchDto.search_text})}">&laquo;</a>
+			<a th:each="num : ${#numbers.sequence(pageDto.pageBarStart, pageDto.pageBarEnd)}"
+			   th:text="${num}" class="page-link"
+			   th:classappend="${pageDto.nowPage == num} ? 'active'"
+			   th:href="@{/(nowPage=${num},search_text=${searchDto.search_text})}">번호</a>
+			<a th:if="${pageDto.next}"
+			   th:href="@{/(nowPage=${pageDto.pageBarEnd+1},search_text=${searchDto.search_text})}">&raquo;</a>
+		</div>
 	<h1>할 일 추가</h1>
 	<div class="addTodo_form">
 		<form action='/addTodo' name="addTodo_form" method="post">
