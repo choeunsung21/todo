@@ -76,4 +76,31 @@ public class TodoListController {
 		}
 		return resultMap;
 	}
+	
+	@PostMapping("/{id}/update")
+	@ResponseBody
+	public Map<String, String> updateTodoApi(@PathVariable("id") Long id) {
+		
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("res_code", "500");
+		resultMap.put("res_msg", "오류가 발생했습니다.");
+
+		Todo todo = service.selectOneTodo(id);
+		if (todo != null) {
+	        if ("N".equals(todo.getFlag())) {
+	            todo.setFlag("Y");
+	        } else if ("Y".equals(todo.getFlag())) {
+	            todo.setFlag("N");
+	        }
+
+	        int result = service.updateTodo(todo);
+	        if(result != 0) {
+	        	resultMap.put("res_code", "200");
+		        resultMap.put("res_msg", "변경 성공");
+	        }   
+	    }
+
+		return resultMap;
+
+	}
 }

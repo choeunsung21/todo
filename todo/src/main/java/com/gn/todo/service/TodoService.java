@@ -63,4 +63,20 @@ public class TodoService {
 		}
 		return result;
 	}
+
+	public Todo selectOneTodo(Long id) {
+		return repository.findById(id).orElse(null);
+	}
+
+	public int updateTodo(Todo todo) {
+		int result = 0;
+		try {
+			repository.save(todo);
+			result = 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		return result;
+	}
+
 }

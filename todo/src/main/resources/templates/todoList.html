@@ -32,7 +32,8 @@
 				<tr th:if="${!#lists.isEmpty(todoList.content)}"
 					th:each="todo, todoStatus : ${todoList.content}"
 					th:attr="data-todo-no=${todo.no}">
-					<td><input type="checkbox"></td>
+					<td><input type="checkbox" id="complete" th:checked="${todo.flag == 'Y'}"
+							   th:onclick="|javascript:todoUpdate('${todo.no}')|"></td>
 					<td th:text="${(pageDto.nowPage-1)*(pageDto.numPerPage)+todoStatus.count}">번호</td>
 					<td th:text="${todo.content}">내용</td>
 					<td><button th:onclick="|javascript:todoDelete('${todo.no}')|">삭제</button></td>
@@ -43,7 +44,7 @@
 	<div class="pagination">
 			<a th:if="${pageDto.prev}"
 			   th:href="@{/(nowPage=${pageDto.pageBarStart-1},search_text=${searchDto.search_text})}">&laquo;</a>
-			<a th:each="num : ${#numbers.sequence(pageDto.pageBarStart, pageDto.pageBarEnd)}"
+			<a style="letter-spacing: 4px;" th:each="num : ${#numbers.sequence(pageDto.pageBarStart, pageDto.pageBarEnd)}"
 			   th:text="${num}" class="page-link"
 			   th:classappend="${pageDto.nowPage == num} ? 'active'"
 			   th:href="@{/(nowPage=${num},search_text=${searchDto.search_text})}">번호</a>
@@ -104,7 +105,7 @@
 			.then(response => response.json())
 			.then(data => {
 				if(data.res_code == "200") {
-					alert("할 일이 삭제되었습니다.");
+					alert(data.res_msg);
 					location.href='/';
 				}
 			})
@@ -112,6 +113,20 @@
 				alert(data.res_msg);
 			});
 		}
+	};
+	
+	// 할 일 완료 수정
+	const todoUpdate = function(no){
+		fetch("/"+no+"/update",{
+			method:'post'
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data.res_msg)
+		})
+		.catch(error => {
+			alert(data.res_msg);
+		});
 	};
 </script>
 </html>
