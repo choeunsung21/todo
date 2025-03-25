@@ -49,4 +49,18 @@ public class TodoService {
 		Page<Todo> resultList = repository.findAll(spec, pageable);
 		return resultList;
 	}
+
+	public int deleteTodo(Long id) {
+		int result = 0;
+		try {
+			Todo target = repository.findById(id).orElse(null);
+			if(target != null) {
+				repository.deleteById(id);
+			}
+			result = 1;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 }
