@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{/js/jquery-3.7.1.js}"></script>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>할 일</title>
 </head>
 <body>
 <h1>할 일 목록</h1>
@@ -12,25 +13,42 @@
 		<button>검색</button>	
 	</div>
 	<br>
-	<div>
+	<div class="todo_list">
 		<table border="1">
-			<tr>
-				<th>완료</th>
-				<th>번호</th>
-				<th>내용</th>
-				<th>삭제</th>
-			</tr>
+			<thead>
+				<tr>
+					<th>완료</th>
+					<th>번호</th>
+					<th>내용</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${#lists.isEmpty(todoList)}">
+					<td colspan="4">조회된 데이터가 없습니다.</td>
+				</tr>
+				<tr th:if="${!#lists.isEmpty(todoList)}"
+					th:each="todo : ${todoList}"
+					th:attr="data-todo-no=${todo.no}">
+					<td><input type="checkbox"></td>
+					<td th:text="${todo.no}">번호</td>
+					<td th:text="${todo.content}">내용</td>
+					<td><button>삭제</button></td>
+				</tr>
+	</tbody>
 		</table>
 	</div>
 	<h1>할 일 추가</h1>
 	<div class="addTodo_form">
 		<form action='/addTodo' name="addTodo_form" method="post">
 			<input type="text" name="content" placeholder="할일을 입력하세요">
+			<input type="hidden" name="flag" value="N">
 			<input type="submit" value="추가하기"> 
 		</form>
 	</div>
 </body>
 <script>
+	// 할 일 추가 스크립트
 	const form = document.addTodo_form;
 	form.addEventListener('submit',(e)=>{
 		e.preventDefault();
@@ -48,15 +66,19 @@
 			alert(vali_text);
 		} else {
 			const payload = new FormData(form);
-			fetch("/",{
+			fetch("/addTodo",{
 				method:'post',
 				body:payload
 			})
-			.then(response => responsejson())
+			.then(response => response.json())
 			.then(data => {
+				alert(data.res_msg)
 				if(data.res_code=="200"){
 					location.href='/';
 				}
+			})
+			.catch(error => {
+				alert(data.res_msg)
 			})
 		}
 	})
