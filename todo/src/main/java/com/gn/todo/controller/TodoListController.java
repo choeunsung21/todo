@@ -42,7 +42,7 @@ public class TodoListController {
 		
 		return "todoList";
 	}
-	
+
 	@PostMapping("/addTodo")
 	@ResponseBody
 	public Map<String, String> addTodoApi(TodoDto dto) {

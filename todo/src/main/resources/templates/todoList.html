@@ -5,16 +5,236 @@
 <meta charset="UTF-8">
 <title>할 일</title>
 </head>
+<style>
+/* 기본 라이트 모드 스타일 */
+:root {
+    --bg-color: #f8f9fa;
+    --text-color: #333;
+    --primary-color: #007bff;
+    --table-bg: white;
+    --table-border: #ddd;
+    --btn-bg: #007bff;
+    --btn-hover: #0056b3;
+}
+
+/* 다크 모드 스타일 */
+.dark-mode {
+    --bg-color: #1e1e1e;
+    --text-color: #f1f1f1;
+    --primary-color: #1f6feb;
+    --table-bg: #2d2d2d;
+    --table-border: #444;
+    --btn-bg: #1f6feb;
+    --btn-hover: #1253a5;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+/* 제목 */
+h1 a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 32px;
+    font-weight: bold;
+}
+
+h1 a:hover {
+    color: var(--primary-color);
+}
+
+/* 다크 모드 전환 버튼 */
+#theme-toggle {
+    background-color: var(--btn-bg);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#theme-toggle:hover {
+    background-color: var(--btn-hover);
+}
+
+/* 검색 폼 */
+form[name="search_form"] {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+form[name="search_form"] label {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+#search_text {
+    width: 300px;
+    padding: 8px;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    font-size: 14px;
+    background: var(--table-bg);
+    color: var(--text-color);
+}
+
+input[type="submit"] {
+    background-color: var(--btn-bg);
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: var(--btn-hover);
+}
+
+/* 테이블 스타일 */
+.todo_list {
+    margin: 20px auto;
+    width: 60%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--table-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    border: 1px solid var(--table-border);
+    padding: 12px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* 완료, 번호, 삭제 열 최소 너비 */
+th:first-child, td:first-child,
+th:nth-child(2), td:nth-child(2),
+th:last-child, td:last-child {
+    width: 50px;
+    white-space: nowrap;
+}
+
+/* 체크박스 */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+/* 삭제 버튼 */
+button {
+    width: 100%;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #a71d2a;
+}
+
+/* 페이징 */
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    text-decoration: none;
+    color: var(--primary-color);
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+.pagination a:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.pagination a.active {
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* 할 일 추가 폼 */
+.addTodo_form {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.addTodo_form input[type="text"] {
+    width: 300px;
+    padding: 8px;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    font-size: 14px;
+    background: var(--table-bg);
+    color: var(--text-color);
+}
+
+.addTodo_form input[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.addTodo_form input[type="submit"]:hover {
+    background-color: #1e7e34;
+}
+</style>
 <body>
-<h1>할 일 목록</h1>
-	<div>
-		<form action="" name="search_form" method="get" >
-			<label for="search_text">내용:</label>
-			<input type="text" id="search_text" name="search_text" th:value="${searchDto.search_text}">
-			<input type="submit" value="검색">
-		</form>
-	</div>
-	<br>
+<h1><a href="/">TO DO LIST</a></h1>
+<!-- 다크모드 -->
+<button id="theme-toggle">🌙</button><br>
+    <div>
+        <form action="" name="search_form" method="get">
+            <label for="search_text">내용:</label>
+            <input type="text" id="search_text" name="search_text" th:value="${searchDto.search_text}">
+            <input type="submit" value="검색">
+        </form>
+    </div>
 	<div class="todo_list">
 		<table border="1">
 			<thead>
@@ -41,17 +261,20 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="pagination">
+	<div th:if="${!#lists.isEmpty(todoList.content)}">
+		<div class="pagination">
 			<a th:if="${pageDto.prev}"
 			   th:href="@{/(nowPage=${pageDto.pageBarStart-1},search_text=${searchDto.search_text})}">&laquo;</a>
-			<a style="letter-spacing: 4px;" th:each="num : ${#numbers.sequence(pageDto.pageBarStart, pageDto.pageBarEnd)}"
+			<a th:each="num : ${#numbers.sequence(pageDto.pageBarStart, pageDto.pageBarEnd)}"
 			   th:text="${num}" class="page-link"
 			   th:classappend="${pageDto.nowPage == num} ? 'active'"
 			   th:href="@{/(nowPage=${num},search_text=${searchDto.search_text})}">번호</a>
 			<a th:if="${pageDto.next}"
 			   th:href="@{/(nowPage=${pageDto.pageBarEnd+1},search_text=${searchDto.search_text})}">&raquo;</a>
 		</div>
-	<h1>할 일 추가</h1>
+	</div>
+	<br><br><br>
+	<h2>할 일 추가</h2>
 	<div class="addTodo_form">
 		<form action='/addTodo' name="addTodo_form" method="post">
 			<input type="text" name="content" placeholder="할일을 입력하세요">
@@ -128,5 +351,28 @@
 			alert(data.res_msg);
 		});
 	};
+	
+	// 다크모드
+	document.addEventListener("DOMContentLoaded", function() {
+	    const themeToggle = document.getElementById("theme-toggle");
+	    const currentTheme = localStorage.getItem("theme");
+	
+	    if (currentTheme === "dark") {
+	        document.body.classList.add("dark-mode");
+	        themeToggle.textContent = "☀️";
+	    }
+	
+	    themeToggle.addEventListener("click", function() {
+	        document.body.classList.toggle("dark-mode");
+	
+	        if (document.body.classList.contains("dark-mode")) {
+	            localStorage.setItem("theme", "dark");
+	            themeToggle.textContent = "☀️";
+	        } else {
+	            localStorage.setItem("theme", "light");
+	            themeToggle.textContent = "🌙";
+	        }
+	    });
+	});
 </script>
 </html>
