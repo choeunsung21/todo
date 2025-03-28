@@ -225,6 +225,23 @@ button:hover {
 }
 </style>
 <body>
+<h1>파일 목록</h1>
+<form name="create_file_form">
+	<input type="file" name="files" multiple>
+	<input type="submit" value="업로드">
+</form>
+<script>
+const file = document.create_file_form;
+file.addEventListener('submit',(e)=>{
+	e.preventDefault();
+	const payload = new FormData(file);
+	fetch("/attach/create",{
+		method:'post',
+		body:payload
+	})
+	.then(response => response.json())
+})
+</script>
 <h1><a href="/">TO DO LIST</a></h1>
 <!-- 다크모드 -->
 <button id="theme-toggle">🌙</button><br>
