@@ -250,7 +250,7 @@ const file = document.create_file_form;
 file.addEventListener('submit',(e)=>{
 	e.preventDefault();
 	const payload = new FormData(file);
-	fetch("/attach/create",{
+	fetch("/s3/upload",{
 		method:'post',
 		body:payload
 	})
