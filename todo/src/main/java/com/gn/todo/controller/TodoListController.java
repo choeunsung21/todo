@@ -1,9 +1,20 @@
 package com.gn.todo.controller;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +26,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gn.todo.dto.PageDto;
 import com.gn.todo.dto.SearchDto;
 import com.gn.todo.dto.TodoDto;
+import com.gn.todo.entity.Attach;
 import com.gn.todo.entity.Todo;
+import com.gn.todo.service.AttachService;
 import com.gn.todo.service.TodoService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class TodoListController {
 	
 	private final TodoService service;
+	private final AttachService attachService;
 	
 	@GetMapping({"","/"})
 	public String searchTodo(Model model, SearchDto searchDto, PageDto pageDto) {
@@ -34,6 +48,10 @@ public class TodoListController {
 			pageDto.setNowPage(1);
 
 		Page<Todo> resultList = service.selectTodoAll(searchDto, pageDto);
+		
+		List<Attach> attachList = attachService.selectAttachList();
+		model.addAttribute("attachList", attachList);
+		
 		pageDto.setTotalPage(resultList.getTotalPages());
 		
 		model.addAttribute("todoList", resultList);
@@ -41,6 +59,30 @@ public class TodoListController {
 		model.addAttribute("pageDto", pageDto);
 		
 		return "todoList";
+	}
+	
+	@GetMapping("/download/{id}")
+	@ResponseBody
+	public ResponseEntity<Object> fileDownload(@PathVariable("id") Long id) {
+		try {
+			Attach fileData = attachService.selectAttachOne(id);
+			if(fileData == null) {
+				return ResponseEntity.notFound().build();
+			}
+			Path filePath = Paths.get(fileData.getAttachPath());
+			Resource resource = new InputStreamResource(Files.newInputStream(filePath));
+			
+			String oriFileName = fileData.getOriName();
+			String encodedName = URLEncoder.encode(oriFileName,StandardCharsets.UTF_8);
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+encodedName);
+			
+			return new ResponseEntity<Object>(resource, headers, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@PostMapping("/addTodo")

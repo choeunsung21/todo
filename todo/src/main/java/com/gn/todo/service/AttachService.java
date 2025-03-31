@@ -1,6 +1,7 @@
 package com.gn.todo.service;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -77,6 +78,16 @@ public class AttachService {
 	public void createAttach(AttachDto dto) {
 		Attach entity = dto.toEntity();
 		attachRepository.save(entity);
+	}
+
+
+	public List<Attach> selectAttachList() {
+		return attachRepository.findAll();
+	}
+
+
+	public Attach selectAttachOne(Long id) {
+		return attachRepository.findById(id).orElse(null);
 	}
 	
 }

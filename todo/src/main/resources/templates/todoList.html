@@ -146,6 +146,8 @@ th:last-child, td:last-child {
     white-space: nowrap;
 }
 
+/* 파일 목록 번호, 다운로드 열 너비 */
+
 /* 체크박스 */
 input[type="checkbox"] {
     width: 18px;
@@ -230,6 +232,21 @@ button:hover {
 	<input type="file" name="files" multiple>
 	<input type="submit" value="업로드">
 </form>
+<br>
+<table border="1" th:if="${!#lists.isEmpty(attachList)}">
+	<thead>
+		<tr>
+			<th>번호</th>
+			<th>다운로드</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:each="attach, attachStatus : ${attachList}">
+			<td th:text="${attachStatus.count}">번호</td>
+			<td><a th:text="${attach.oriName}" th:onclick="|location.href='@{/download/{id}(id=${attach.attachNo})}'|">파일명</a></td>
+		</tr>
+	</tbody>
+</table>
 <script>
 const file = document.create_file_form;
 file.addEventListener('submit',(e)=>{
@@ -240,6 +257,15 @@ file.addEventListener('submit',(e)=>{
 		body:payload
 	})
 	.then(response => response.json())
+	.then(data => {
+		alert(data.res_msg);
+		if(data.res_code=="200"){
+			location.href='/';
+		}
+	})
+	.catch(error => {
+		alert(data.res_msg);
+	})
 })
 </script>
 <h1><a href="/">TO DO LIST</a></h1>
