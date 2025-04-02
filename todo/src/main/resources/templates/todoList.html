@@ -241,7 +241,7 @@ button:hover {
 	<tbody>
 		<tr th:each="attach, attachStatus : ${attachList}">
 			<td th:text="${attachStatus.count}">번호</td>
-			<td><a th:text="${attach.oriName}" th:onclick="|location.href='@{/s3/download/{id}(id=${attach.attachNo})}'|">파일명</a></td>
+			<td><a th:text="${attach.oriName}" th:onclick="|location.href='@{/download/{id}(id=${attach.attachNo})}'|">파일명</a></td>
 		</tr>
 	</tbody>
 </table>
@@ -250,7 +250,7 @@ const file = document.create_file_form;
 file.addEventListener('submit',(e)=>{
 	e.preventDefault();
 	const payload = new FormData(file);
-	fetch("/s3/upload",{
+	fetch("/attach/create",{
 		method:'post',
 		body:payload
 	})
