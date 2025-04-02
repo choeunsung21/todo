@@ -6,30 +6,28 @@
 <title>할 일</title>
 </head>
 <style>
-/* 기본 라이트 모드 스타일 */
+/* 라이트 모드 스타일 */
 :root {
     --bg-color: #ffffff;
-    --text-color: #000000;
-    --primary-color: #000000;
-    --table-bg: #ffffff;
-    --table-border: #ddd;
+    --text-color: #0f1419;
     --btn-bg: #000000;
-    --btn-hover: #333333;
+    --btn-text: #ffffff;
+    --input-bg: #f0f0f0;
+    --input-border: #cccccc;
 }
 
 /* 다크 모드 스타일 */
 .dark-mode {
     --bg-color: #000000;
     --text-color: #ffffff;
-    --primary-color: #ffffff;
-    --table-bg: #111111;
-    --table-border: #444;
     --btn-bg: #ffffff;
-    --btn-hover: #aaaaaa;
+    --btn-text: #000000;
+    --input-bg: #1e1e1e;
+    --input-border: #444444;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     margin: 0;
@@ -38,162 +36,120 @@ body {
 }
 
 /* 제목 */
-h1 a {
-    text-decoration: none;
-    color: var(--text-color);
+h1 {
     font-size: 32px;
     font-weight: bold;
+    margin-bottom: 20px;
 }
 
-h1 a:hover {
-    color: var(--primary-color);
-}
-
-/* 다크 모드 전환 버튼 */
+/* 다크 모드 버튼 */
 #theme-toggle {
-    background-color: var(--btn-bg);
-    color: var(--bg-color);
-    border: none;
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
-    padding: 5px;
+    background-color: transparent;
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
     border-radius: 50%;
     cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: fixed;
+    top: 15px;
+    right: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease-in-out;
 }
 
 #theme-toggle:hover {
-    background-color: var(--btn-hover);
-}
-
-/* 테이블 스타일 */
-.todo_list {
-    margin: 20px auto;
-    width: 40%;
-}
-
-table {
-    width: 40%;
-    border-collapse: collapse;
-    background: var(--table-bg);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* 파일 목록 번호 열 최소화 */
-.todo_list th:first-child, 
-.todo_list td:first-child {
-    width: 30px;
-    white-space: nowrap;
-}
-
-/* 할 일 목록 - 완료, 번호, 삭제 열 최소화 */
-th:first-child, td:first-child { /* 완료 체크박스 */
-    width: 40px;
-    text-align: center;
-}
-
-th:nth-child(2), td:nth-child(2) { /* 번호 */
-    width: 50px;
-    text-align: center;
-}
-
-th:last-child, td:last-child { /* 삭제 버튼 */
-    width: 60px;
-    text-align: center;
-}
-
-/* 체크박스 크기 조정 */
-input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--btn-bg);
-}
-
-/* 검색 폼 */
-form[name="search_form"] {
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-form[name="search_form"] label {
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--text-color);
-}
-
-#search_text {
-    width: 250px;
-    padding: 8px;
-    border: 2px solid var(--primary-color);
-    border-radius: 5px;
-    font-size: 14px;
-    background: var(--table-bg);
-    color: var(--text-color);
-}
-
-input[type="submit"] {
-    background-color: var(--btn-bg);
+    background-color: var(--text-color);
     color: var(--bg-color);
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
 }
 
-input[type="submit"]:hover {
-    background-color: var(--btn-hover);
+/* 입력 필드 */
+input[type="text"], input[type="file"] {
+    width: 80%;
+    padding: 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 30px;
+    font-size: 16px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    outline: none;
+}
+
+/* 버튼 */
+input[type="submit"], button {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    padding: 12px 20px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: var(--btn-text);
+    color: var(--btn-bg);
+}
+
+/* 테이블 */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: var(--bg-color);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+th, td {
+    border-bottom: 1px solid var(--input-border);
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+th {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    font-weight: bold;
+}
+
+/* 체크박스 */
+input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: var(--btn-bg);
 }
 
 /* 삭제 버튼 */
 button {
-    width: 100%;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 5px;
-    font-size: 14px;
-    border-radius: 5px;
-    cursor: pointer;
+    width: 100px;
+    background-color: var(--btn-bg);
 }
 
 button:hover {
-    background-color: #a71d2a;
+    background-color: var(--btn-text);
+    color: var(--btn-bg);
 }
 
 /* 페이징 */
-.pagination {
-    margin-top: 20px;
-}
-
 .pagination a {
-    padding: 8px 12px;
+    padding: 10px 15px;
     text-decoration: none;
-    color: var(--primary-color);
-    border-radius: 5px;
-    margin: 0 5px;
-}
-
-.pagination a:hover {
-    background-color: var(--primary-color);
-    color: var(--bg-color);
-}
-
-.pagination a.active {
+    color: var(--text-color);
+    border-radius: 30px;
     font-weight: bold;
-    background-color: var(--primary-color);
-    color: var(--bg-color);
+    margin: 0 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.pagination a:hover, .pagination a.active {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
 }
 
 /* 할 일 추가 폼 */
@@ -205,27 +161,20 @@ button:hover {
 }
 
 .addTodo_form input[type="text"] {
-    width: 250px;
-    padding: 8px;
-    border: 2px solid var(--primary-color);
-    border-radius: 5px;
-    font-size: 14px;
-    background: var(--table-bg);
-    color: var(--text-color);
+    width: 60%;
+    padding: 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 30px;
+    font-size: 16px;
 }
 
 .addTodo_form input[type="submit"] {
     background-color: var(--btn-bg);
-    color: var(--bg-color);
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
 }
 
 .addTodo_form input[type="submit"]:hover {
-    background-color: var(--btn-hover);
+    background-color: var(--btn-text);
+    color: var(--btn-bg);
 }
 </style>
 <body>
