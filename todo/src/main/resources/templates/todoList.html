@@ -8,30 +8,32 @@
 <style>
 /* 기본 라이트 모드 스타일 */
 :root {
-    --bg-color: #fafafa;
-    --text-color: #262626;
-    --primary-color: #ff4f8a;
-    --table-bg: white;
-    --table-border: #ddd;
-    --btn-bg: #ff4f8a;
-    --btn-hover: #e63e76;
-    --input-border: #dbdbdb;
+    --bg-color: #ffffff;
+    --text-color: #0f1419;
+    --primary-color: #1D9BF0;
+    --table-bg: #ffffff;
+    --table-border: #e1e8ed;
+    --btn-bg: #1D9BF0;
+    --btn-hover: #1A8CD8;
+    --input-bg: #f5f8fa;
+    --input-border: #cfd9de;
 }
 
 /* 다크 모드 스타일 */
 .dark-mode {
-    --bg-color: #121212;
-    --text-color: #f1f1f1;
-    --primary-color: #ff4f8a;
-    --table-bg: #1e1e1e;
-    --table-border: #444;
-    --btn-bg: #ff4f8a;
-    --btn-hover: #e63e76;
-    --input-border: #444;
+    --bg-color: #000000;
+    --text-color: #e7e9ea;
+    --primary-color: #1D9BF0;
+    --table-bg: #15181c;
+    --table-border: #2f3336;
+    --btn-bg: #1D9BF0;
+    --btn-hover: #1A8CD8;
+    --input-bg: #1e1e1e;
+    --input-border: #2f3336;
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     margin: 0;
@@ -41,52 +43,54 @@ body {
 
 /* 제목 */
 h1 {
-    font-size: 36px;
+    font-size: 32px;
     font-weight: bold;
-    color: var(--text-color);
-    font-family: 'Segoe UI', sans-serif;
+    margin-bottom: 20px;
 }
 
 /* 다크 모드 전환 버튼 */
 #theme-toggle {
-    background-color: var(--btn-bg);
-    color: white;
-    border: none;
+    background-color: transparent;
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
     width: 40px;
     height: 40px;
     font-size: 18px;
     border-radius: 50%;
     cursor: pointer;
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
 #theme-toggle:hover {
-    background-color: var(--btn-hover);
+    background-color: var(--text-color);
+    color: var(--bg-color);
 }
 
 /* 입력 필드 */
 input[type="text"], input[type="file"] {
-    width: 300px;
-    padding: 10px;
-    border: 2px solid var(--input-border);
-    border-radius: 10px;
+    width: 80%;
+    padding: 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 30px;
     font-size: 16px;
-    background: var(--table-bg);
+    background: var(--input-bg);
     color: var(--text-color);
+    outline: none;
 }
 
+/* 버튼 스타일 */
 input[type="submit"], button {
     background-color: var(--btn-bg);
     color: white;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: 30px;
     font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
@@ -122,14 +126,14 @@ th {
 
 /* 체크박스 */
 input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     accent-color: var(--primary-color);
 }
 
 /* 삭제 버튼 */
 button {
-    width: 80px;
+    width: 100px;
     background-color: #ff4f4f;
 }
 
@@ -142,7 +146,8 @@ button:hover {
     padding: 10px 15px;
     text-decoration: none;
     color: var(--primary-color);
-    border-radius: 10px;
+    border-radius: 30px;
+    font-weight: bold;
     margin: 0 5px;
     transition: all 0.3s ease-in-out;
 }
@@ -161,19 +166,19 @@ button:hover {
 }
 
 .addTodo_form input[type="text"] {
-    width: 350px;
-    padding: 10px;
-    border: 2px solid var(--input-border);
-    border-radius: 10px;
+    width: 60%;
+    padding: 12px;
+    border: 1px solid var(--input-border);
+    border-radius: 30px;
     font-size: 16px;
 }
 
 .addTodo_form input[type="submit"] {
-    background-color: #28a745;
+    background-color: var(--primary-color);
 }
 
 .addTodo_form input[type="submit"]:hover {
-    background-color: #1e7e34;
+    background-color: var(--btn-hover);
 }
 </style>
 <body>
