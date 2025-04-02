@@ -43,7 +43,7 @@ public class TodoListController {
 	
 	@GetMapping({"","/"})
 	public String searchTodo(Model model, SearchDto searchDto, PageDto pageDto) {
-
+		System.out.println("ci/cd test1");
 		if (pageDto.getNowPage() == 0)
 			pageDto.setNowPage(1);
 
